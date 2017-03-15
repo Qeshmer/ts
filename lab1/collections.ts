@@ -31,13 +31,13 @@ namespace collections {
 
         // iterator(): Iterator<E>;
 
-        // toArray(): E[];
+        toArray(): E[];
 
         add(e: E): boolean;
 
         remove(e: any): boolean;
 
-        // addAll(col: Collection<E>): boolean;
+        addAll(col: Collection<E>): boolean;
 
         // removeAll(col: Collection<any>): boolean;
 
@@ -149,7 +149,7 @@ namespace collections {
             else {
                 return false;
             }
-        }
+        };
 
         clear(): void {
             this.list = [];
@@ -157,19 +157,25 @@ namespace collections {
 
         contains(e: any): boolean {
             return this.list.indexOf(e) !== -1;
-        }
+        };
+
+        isEmpty(): boolean {
+            return this.size() === 0;
+        };
 
         size(): number {
             return this.list.length;
         };
 
-        isEmpty(): boolean {
-            if (this.size() === 0) {
-                return true;
+        toArray(): E[] {
+            return this.list.slice();
+        };
+
+        addAll(col: Collection<E>): boolean {
+            for (let item of col.toArray()) {
+                this.add(item);
             }
-            else {
-                return false;
-            }
+            return true;
         };
 
     }

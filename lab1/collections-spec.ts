@@ -43,6 +43,35 @@ describe('Collection implementation', () => {
         expect(stringColl.remove('Yo')).toBe(true);
         expect(stringColl.remove('Does\'t exist')).toBe(false);
         expect(stringColl.size()).toBe(1);
+        stringColl.clear();
+    });
+
+    it('converts the collection to an array', () => {
+        stringColl.add('Rich');
+        stringColl.add('Morto');
+        var newArray = stringColl.toArray();
+        expect(newArray).toEqual(jasmine.any(Array));
+
+        stringColl.add('Test');
+        stringColl.add('Test2');
+        // checking to make sure newArray is a shallow copy
+        expect(newArray.length).toBe(2);
+    });
+
+    it('adds all the elements of a collection to the invoking collection', () => {
+        let collA = new collections.Collection<number>();
+        let collB = new collections.Collection<number>();
+
+        collA.add(1);
+        collA.add(2);
+        collA.add(3);
+        collB.add(4);
+        collB.add(5);
+        collB.add(6);
+
+        collA.addAll(collB);
+        expect(collA.size()).toBe(6);
+        console.log(collA.toArray())
     });
 
 });

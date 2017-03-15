@@ -20,6 +20,7 @@ var collections;
                 return false;
             }
         };
+        ;
         Collection.prototype.clear = function () {
             this.list = [];
         };
@@ -27,17 +28,25 @@ var collections;
         Collection.prototype.contains = function (e) {
             return this.list.indexOf(e) !== -1;
         };
+        ;
+        Collection.prototype.isEmpty = function () {
+            return this.size() === 0;
+        };
+        ;
         Collection.prototype.size = function () {
             return this.list.length;
         };
         ;
-        Collection.prototype.isEmpty = function () {
-            if (this.size() === 0) {
-                return true;
+        Collection.prototype.toArray = function () {
+            return this.list.slice();
+        };
+        ;
+        Collection.prototype.addAll = function (col) {
+            for (var _i = 0, _a = col.toArray(); _i < _a.length; _i++) {
+                var item = _a[_i];
+                this.add(item);
             }
-            else {
-                return false;
-            }
+            return true;
         };
         ;
         return Collection;
