@@ -29,21 +29,21 @@ namespace collections {
 
         contains(e: any): boolean;
 
-        iterator(): Iterator<E>;
+        // iterator(): Iterator<E>;
 
-        toArray(): E[];
+        // toArray(): E[];
 
         add(e: E): boolean;
 
-        remove(e: any): boolean;
+        // remove(e: any): boolean;
 
-        addAll(col: Collection<E>): boolean;
+        // addAll(col: Collection<E>): boolean;
 
-        removeAll(col: Collection<any>): boolean;
+        // removeAll(col: Collection<any>): boolean;
 
-        containsAll(col: Collection<any>): boolean;
+        // containsAll(col: Collection<any>): boolean;
 
-        retainAll(col: Collection<any>): boolean;
+        // retainAll(col: Collection<any>): boolean;
 
         clear(): void;
 
@@ -82,7 +82,7 @@ namespace collections {
     /**
      * A key value pair
      */
-    export interface Entry<K,V> {
+    export interface Entry<K, V> {
 
         getKey(): K;
 
@@ -92,7 +92,7 @@ namespace collections {
     /**
      * A set of keys mapping to values
      */
-    export interface Map<K,V> {
+    export interface Map<K, V> {
 
         size(): number;
 
@@ -114,9 +114,9 @@ namespace collections {
 
         keySet(): Set<K>;
 
-        values(): Collection<V> ;
+        values(): Collection<V>;
 
-        entrySet(): Set<Entry<K, V>> ;
+        entrySet(): Set<Entry<K, V>>;
 
     }
 
@@ -127,11 +127,38 @@ namespace collections {
     // or:
     // nodejs collections.js
     // depending on system
-    console.log('Hi from collections namespace!');
 
-    // For your collections classes, maybe something like:
-    //
-    //export class ArrayList<E> implements List<E> {
-    //}
+    export class Collection<E> implements Collection<E> {
+        private list: E[];
+
+        constructor() {
+            this.list = [];
+        };
+
+        add(e: E): Boolean {
+            this.list.push(e);
+            return true;
+        };
+
+        clear(): void {
+            this.list = [];
+        };
+
+        contains(e: any): boolean  {
+            return this.list.indexOf(e) !== -1;
+        }
+
+        size(): number {
+            return this.list.length;
+        };
+
+        isEmpty(): boolean {
+            if (this.size() === 0)
+                return true;
+            else
+                return false;
+        };
+
+    }
 
 }
