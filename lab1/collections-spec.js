@@ -14,6 +14,18 @@ describe('Collection implementation', function () {
         expect(stringColl.size()).toBe(0);
     });
     it('checks if element exists in collection', function () {
+        stringColl.add('Steve');
+        stringColl.add('Gunnar');
+        expect(stringColl.contains('Glenn')).toBe(false);
+        expect(stringColl.contains('Gunnar')).toBe(true);
+        stringColl.clear();
+    });
+    it('removes an element in the collection', function () {
+        stringColl.add('Yo');
+        stringColl.add('Gazorpazorp');
+        expect(stringColl.remove('Yo')).toBe(true);
+        expect(stringColl.remove('Does\'t exist')).toBe(false);
+        expect(stringColl.size()).toBe(1);
     });
 });
 //# sourceMappingURL=collections-spec.js.map

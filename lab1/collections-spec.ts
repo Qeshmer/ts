@@ -14,7 +14,7 @@ describe('Collection implementation', () => {
 
     });
 
-    it('adds a new item to the collection', () =>  {
+    it('adds a new item to the collection', () => {
 
         stringColl.add('Holá');
         stringColl.add('Adiós');
@@ -30,7 +30,19 @@ describe('Collection implementation', () => {
     });
 
     it('checks if element exists in collection', () => {
+        stringColl.add('Steve');
+        stringColl.add('Gunnar');
+        expect(stringColl.contains('Glenn')).toBe(false);
+        expect(stringColl.contains('Gunnar')).toBe(true);
+        stringColl.clear();
+    });
 
+    it('removes an element in the collection', () => {
+        stringColl.add('Yo');
+        stringColl.add('Gazorpazorp');
+        expect(stringColl.remove('Yo')).toBe(true);
+        expect(stringColl.remove('Does\'t exist')).toBe(false);
+        expect(stringColl.size()).toBe(1);
     });
 
 });

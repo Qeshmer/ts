@@ -35,7 +35,7 @@ namespace collections {
 
         add(e: E): boolean;
 
-        // remove(e: any): boolean;
+        remove(e: any): boolean;
 
         // addAll(col: Collection<E>): boolean;
 
@@ -140,11 +140,22 @@ namespace collections {
             return true;
         };
 
+        remove(e: E): Boolean {
+            if (this.contains(e)) {
+                var index = this.list.indexOf(e);
+                this.list.splice(index, 1);
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
+
         clear(): void {
             this.list = [];
         };
 
-        contains(e: any): boolean  {
+        contains(e: any): boolean {
             return this.list.indexOf(e) !== -1;
         }
 
@@ -153,10 +164,12 @@ namespace collections {
         };
 
         isEmpty(): boolean {
-            if (this.size() === 0)
+            if (this.size() === 0) {
                 return true;
-            else
+            }
+            else {
                 return false;
+            }
         };
 
     }

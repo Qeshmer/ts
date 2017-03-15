@@ -10,6 +10,16 @@ var collections;
             return true;
         };
         ;
+        Collection.prototype.remove = function (e) {
+            if (this.contains(e)) {
+                var index = this.list.indexOf(e);
+                this.list.splice(index, 1);
+                return true;
+            }
+            else {
+                return false;
+            }
+        };
         Collection.prototype.clear = function () {
             this.list = [];
         };
@@ -22,10 +32,12 @@ var collections;
         };
         ;
         Collection.prototype.isEmpty = function () {
-            if (this.size() === 0)
+            if (this.size() === 0) {
                 return true;
-            else
+            }
+            else {
                 return false;
+            }
         };
         ;
         return Collection;
