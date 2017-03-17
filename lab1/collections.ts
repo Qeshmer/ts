@@ -11,7 +11,7 @@ namespace collections {
      */
     export interface Iterator<E> {
         hasNext(): boolean;
-        next(): E;
+        // next(): E;
     }
 
     export interface Iterable<T> {
@@ -29,7 +29,7 @@ namespace collections {
 
         contains(e: any): boolean;
 
-        // iterator(): Iterator<E>;
+        iterator(): Iterator<E>;
 
         toArray(): E[];
 
@@ -39,11 +39,11 @@ namespace collections {
 
         addAll(col: Collection<E>): boolean;
 
-        // removeAll(col: Collection<any>): boolean;
+        removeAll(col: Collection<any>): boolean;
 
-        // containsAll(col: Collection<any>): boolean;
+        containsAll(col: Collection<any>): boolean;
 
-        // retainAll(col: Collection<any>): boolean;
+        retainAll(col: Collection<any>): boolean;
 
         clear(): void;
 
@@ -128,6 +128,34 @@ namespace collections {
     // nodejs collections.js
     // depending on system
 
+    export class Iterator<E> implements Iterator<E> {
+
+        collection: E[];
+
+        private index = 0;
+
+        constructor(collection: E[]) {
+            this.collection = collection;
+        };
+
+        hasNext(): boolean {
+            return this.index < this.collection.length;
+        }
+
+        size(): any {
+            return this.collection.length;
+        }
+
+        next(): E {
+            if (this.hasNext()) {
+                return this.collection[this.index++];
+            } else {
+                return null;
+            }
+        }
+
+    }
+
     export class Collection<E> implements Collection<E> {
         private list: E[];
 
@@ -167,15 +195,54 @@ namespace collections {
             return this.list.length;
         };
 
-        toArray(): E[] {
-            return this.list.slice();
-        };
 
-        addAll(col: Collection<E>): boolean {
-            for (let item of col.toArray()) {
+        addAll(coll: Collection<E>): boolean {
+            for (let item of coll.toArray()) {
                 this.add(item);
             }
             return true;
+        };
+
+        removeAll(coll: Collection<E>): boolean {
+            let changed = false;
+
+            for (let item of this.toArray()) {
+                if (coll.contains(item)) {
+                    this.remove(item);
+                    changed = true;
+                }
+            }
+            return changed;
+
+        }
+
+        retainAll(coll: Collection<any>): boolean {
+            let changed = false;
+
+            for (let item of this.toArray()) {
+                if (!coll.contains(item)) {
+                    this.remove(item);
+                    changed = true;
+                }
+            }
+            return changed;
+        }
+
+        containsAll(coll: Collection<any>): boolean {
+            let containsAll = false;
+            for (let item of coll.toArray()) {
+                if (this.contains(item)) {
+                    containsAll = true;
+                } else {
+                    containsAll = false;
+                    break;
+                }
+            } 
+            return containsAll;
+        }
+
+        toArray(): E[] {
+            return this.list.slice();
         };
 
     }

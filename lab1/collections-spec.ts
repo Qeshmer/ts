@@ -5,55 +5,55 @@
 
 describe('Collection implementation', () => {
 
-    let stringColl = new collections.Collection<string>();
 
     it('implements a collection', () => {
-
-        expect(stringColl.size()).toBe(0);
-        expect(stringColl.isEmpty()).toBe(true);
+        let stringCollection = new collections.Collection<string>();
+        expect(stringCollection.size()).toBe(0);
+        expect(stringCollection.isEmpty()).toBe(true);
 
     });
 
     it('adds a new item to the collection', () => {
-
-        stringColl.add('Holá');
-        stringColl.add('Adiós');
-        expect(stringColl.size()).toBe(2);
+        let stringCollection = new collections.Collection<string>();
+        stringCollection.add('Holá');
+        stringCollection.add('Adiós');
+        expect(stringCollection.size()).toBe(2);
 
     });
 
     it('clears/resets the collection', () => {
-
-        stringColl.clear();
-        expect(stringColl.size()).toBe(0);
+        let stringCollection = new collections.Collection<string>();
+        stringCollection.clear();
+        expect(stringCollection.size()).toBe(0);
 
     });
 
     it('checks if element exists in collection', () => {
-        stringColl.add('Steve');
-        stringColl.add('Gunnar');
-        expect(stringColl.contains('Glenn')).toBe(false);
-        expect(stringColl.contains('Gunnar')).toBe(true);
-        stringColl.clear();
+        let stringCollection = new collections.Collection<string>();
+        stringCollection.add('Steve');
+        stringCollection.add('Gunnar');
+        expect(stringCollection.contains('Glenn')).toBe(false);
+        expect(stringCollection.contains('Gunnar')).toBe(true);
     });
 
     it('removes an element in the collection', () => {
-        stringColl.add('Yo');
-        stringColl.add('Gazorpazorp');
-        expect(stringColl.remove('Yo')).toBe(true);
-        expect(stringColl.remove('Does\'t exist')).toBe(false);
-        expect(stringColl.size()).toBe(1);
-        stringColl.clear();
+        let stringCollection = new collections.Collection<string>();
+        stringCollection.add('Yo');
+        stringCollection.add('Gazorpazorp');
+        expect(stringCollection.remove('Yo')).toBe(true);
+        expect(stringCollection.remove('Does\'t exist')).toBe(false);
+        expect(stringCollection.size()).toBe(1);
     });
 
     it('converts the collection to an array', () => {
-        stringColl.add('Rich');
-        stringColl.add('Morto');
-        var newArray = stringColl.toArray();
+        let stringCollection = new collections.Collection<string>();
+        stringCollection.add('Rich');
+        stringCollection.add('Morto');
+        var newArray = stringCollection.toArray();
         expect(newArray).toEqual(jasmine.any(Array));
 
-        stringColl.add('Test');
-        stringColl.add('Test2');
+        stringCollection.add('Test');
+        stringCollection.add('Test2');
         // checking to make sure newArray is a shallow copy
         expect(newArray.length).toBe(2);
     });
@@ -71,7 +71,88 @@ describe('Collection implementation', () => {
 
         collA.addAll(collB);
         expect(collA.size()).toBe(6);
-        console.log(collA.toArray())
+    });
+
+    it('should create an iterator for the collection', () => {
+        let stringCollection = new collections.Collection<string>();
+        stringCollection.add("Freddie");
+        stringCollection.add("Hello");
+
+        let stringIterator = new collections.Iterator<string>(stringCollection.toArray());
+        expect(stringIterator.next()).toBe('Freddie');
+        expect(stringIterator.next()).toBe('Hello');
+        expect(stringIterator.next()).toBe(null);
+
+    });
+
+    it('should remove all elements of a given collection from the invoking collection', () => {
+
+        let myCollection = new collections.Collection<string>();
+        let removeCollection = new collections.Collection<string>();
+
+        myCollection.add("Morto");
+        myCollection.add("Rich");
+        myCollection.add("Gazorpazorp");
+
+        removeCollection.add("Gazorpazorp");
+
+        expect(myCollection.removeAll(removeCollection)).toBe(true);
+        expect(myCollection.size()).toBe(2);
+
+        myCollection.clear();
+        removeCollection.clear();
+
+        myCollection.add("So");
+        myCollection.add("No");
+
+        removeCollection.add("STOP");
+        expect(myCollection.removeAll(removeCollection)).toBe(false);
+
+    });
+
+    it('should remove all elements except those contained in the given collection', () => {
+        let myCollection = new collections.Collection<string>();
+        let retainCollection = new collections.Collection<string>();
+
+        myCollection.add("Eleven");
+        myCollection.add("Twelve");
+        myCollection.add("Thirteen");
+        myCollection.add("Fourteen");
+        myCollection.add("Fifteen");
+
+
+        retainCollection.add("Fifteen");
+
+        expect(myCollection.retainAll(retainCollection)).toBe(true);
+        expect(myCollection.size()).toBe(1);
+
+    });
+
+    it('should check if the invoking collection contains all of the given collections elements', () => {
+        var myCollection = new collections.Collection<string>();
+        var containCollection = new collections.Collection<string>();
+
+        myCollection.add("Gazorpazorp");
+        myCollection.add("Zygerians");
+        myCollection.add("Pluto");
+        myCollection.add("Thing");
+
+        containCollection.add("Pluto");
+        containCollection.add("Thing");
+
+        expect(myCollection.containsAll(containCollection)).toBe(true);
+
+        myCollection.clear();
+        containCollection.clear();
+
+        myCollection.add("Nope");
+        myCollection.add("Story time");
+        myCollection.add("Zapp");
+        containCollection.add("Zapp");
+        containCollection.add("Blob");
+
+        expect(myCollection.containsAll(containCollection)).toBe(false);
+
     });
 
 });

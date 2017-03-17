@@ -1,5 +1,28 @@
 var collections;
 (function (collections) {
+    var Iterator = (function () {
+        function Iterator(collection) {
+            this.index = 0;
+            this.collection = collection;
+        }
+        ;
+        Iterator.prototype.hasNext = function () {
+            return this.index < this.collection.length;
+        };
+        Iterator.prototype.size = function () {
+            return this.collection.length;
+        };
+        Iterator.prototype.next = function () {
+            if (this.hasNext()) {
+                return this.collection[this.index++];
+            }
+            else {
+                return null;
+            }
+        };
+        return Iterator;
+    }());
+    collections.Iterator = Iterator;
     var Collection = (function () {
         function Collection() {
             this.list = [];
@@ -37,16 +60,52 @@ var collections;
             return this.list.length;
         };
         ;
-        Collection.prototype.toArray = function () {
-            return this.list.slice();
-        };
-        ;
-        Collection.prototype.addAll = function (col) {
-            for (var _i = 0, _a = col.toArray(); _i < _a.length; _i++) {
+        Collection.prototype.addAll = function (coll) {
+            for (var _i = 0, _a = coll.toArray(); _i < _a.length; _i++) {
                 var item = _a[_i];
                 this.add(item);
             }
             return true;
+        };
+        ;
+        Collection.prototype.removeAll = function (coll) {
+            var changed = false;
+            for (var _i = 0, _a = this.toArray(); _i < _a.length; _i++) {
+                var item = _a[_i];
+                if (coll.contains(item)) {
+                    this.remove(item);
+                    changed = true;
+                }
+            }
+            return changed;
+        };
+        Collection.prototype.retainAll = function (coll) {
+            var changed = false;
+            for (var _i = 0, _a = this.toArray(); _i < _a.length; _i++) {
+                var item = _a[_i];
+                if (!coll.contains(item)) {
+                    this.remove(item);
+                    changed = true;
+                }
+            }
+            return changed;
+        };
+        Collection.prototype.containsAll = function (coll) {
+            var containsAll = false;
+            for (var _i = 0, _a = coll.toArray(); _i < _a.length; _i++) {
+                var item = _a[_i];
+                if (this.contains(item)) {
+                    containsAll = true;
+                }
+                else {
+                    containsAll = false;
+                    break;
+                }
+            }
+            return containsAll;
+        };
+        Collection.prototype.toArray = function () {
+            return this.list.slice();
         };
         ;
         return Collection;
