@@ -96,11 +96,11 @@ namespace collections {
 
         size(): number;
 
-        isEmpty(): number;
+        isEmpty(): boolean;
 
         containsKey(key: any): boolean;
 
-        containsValue(value: any): number;
+        containsValue(value: any): boolean;
 
         get(key: any): V;
 
@@ -120,13 +120,7 @@ namespace collections {
 
     }
 
-
-    // Put your implementations below.
-    // You can even put some code here to try your implementations, run it by
-    // node collections.js
-    // or:
-    // nodejs collections.js
-    // depending on system
+    // Classes
 
     export class Iterator<E> implements Iterator<E> {
 
@@ -157,7 +151,7 @@ namespace collections {
     }
 
     export class Collection<E> implements Collection<E> {
-        private list: E[];
+        protected list: E[];
 
         constructor() {
             this.list = [];
@@ -170,7 +164,7 @@ namespace collections {
 
         remove(e: E): Boolean {
             if (this.contains(e)) {
-                var index = this.list.indexOf(e);
+                let index = this.list.indexOf(e);
                 this.list.splice(index, 1);
                 return true;
             }
@@ -214,7 +208,7 @@ namespace collections {
             }
             return changed;
 
-        }
+        };
 
         retainAll(coll: Collection<any>): boolean {
             let changed = false;
@@ -226,18 +220,18 @@ namespace collections {
                 }
             }
             return changed;
-        }
+        };
 
         containsAll(coll: Collection<any>): boolean {
             let containsAll = false;
             for (let item of coll.toArray()) {
-                if (this.contains(item)) {
+                if (this.contains(item)) {
                     containsAll = true;
                 } else {
                     containsAll = false;
                     break;
                 }
-            } 
+            }
             return containsAll;
         }
 
@@ -247,4 +241,216 @@ namespace collections {
 
     }
 
-}
+    export class Set<E> extends Collection<E> implements Set<E>{
+
+        add(e: E): boolean {
+            if (this.contains(e)) {
+                return false;
+            } else {
+                this.list.push(e);
+                return true;
+            }
+        };
+    }
+
+    export class List<E> extends Collection<E> implements List<E> {
+
+        get(index: number): E {
+            return this.list[index];
+        };
+
+        set(index: number, element: E): E {
+            this.list[index] = element;
+            return this.get(index);
+        };
+
+        addAtIndex(index: number, element: E): void {
+            this.list.splice(index, 0, element);
+        };
+
+        addAllAtIndex(index: number, coll: Collection<E>): boolean {
+            let changed = false;
+
+            let arr = coll.toArray();
+
+            for (let item of arr) {
+                this.addAtIndex(index, item);
+                index++
+            }
+
+            changed = true;
+            return changed;
+        };
+
+        removeAtIndex(index: number): E {
+            this.list.splice(index, 1);
+            return this.get(index);
+        };
+
+        indexOf(o: any): number {
+            return this.list.indexOf(o);
+        };
+
+        lastIndexOf(o: any): number {
+            return this.toArray().lastIndexOf(o);
+        };
+
+        subList(fromIndex: number, toIndex: number): List<E> {
+            let newList = new List<E>();
+
+            let arr = this.toArray().slice(fromIndex, toIndex);
+            for (let item of arr) {
+                newList.add(item);
+            }
+
+            return newList;
+
+        };
+
+    }
+
+    export class Entry<K, V> implements Entry<K, V> {
+        private _keyValuePair;
+
+        constructor(key: K, value: V) {
+            this._keyValuePair = {};
+            this._keyValuePair[key] = value;
+        }
+
+        getKey(): K {
+            let keyValuePair = this._keyValuePair;
+            let key;
+            for (let prop in keyValuePair) {
+                key = prop;
+            }
+            return key;
+        }
+
+        getValue(): V {
+            let keyValuePair = this._keyValuePair;
+            let value;
+
+            for (let val in keyValuePair) {
+                value = keyValuePair[val];
+            }
+            return value;
+        }
+    }
+
+    /*
+        export interface Map<K, V> {
+            entrySet(): Set<Entry<K, V>>;
+        }
+    */
+
+    export class Map<K, V> implements Map<K, V> {
+
+        private _mapList;
+
+        constructor() {
+            this._mapList = {};
+        }
+
+        put(key: K, value: V): V {
+
+            this._mapList[key] = value;
+            return value;
+        }
+
+        get(key: any): V {
+
+            let mapList = this._mapList;
+
+            return mapList[key];
+        }
+
+        remove(key: any): V {
+
+            let value = this._mapList[key];
+            delete this._mapList[key];
+            return value;
+
+        }
+
+        clear(): void {
+
+            this._mapList = {};
+
+        }
+
+        putAll(map: Map<K, V>): void {
+            let mapArr = map.toArray();
+
+            for (let item of mapArr) {
+                this.put(item[0], item[1]);
+            }
+
+        }
+
+        size(): number {
+
+            let mapList = this._mapList;
+
+            let count = 0;
+            for (let item in mapList) {
+                count++;
+            }
+            return count;
+
+        }
+
+        isEmpty(): boolean {
+            return this.size() === 0;
+        }
+
+        containsKey(key: any): boolean {
+
+            return key in this._mapList;
+
+        }
+
+        containsValue(value: any): boolean {
+
+            let mapList = this._mapList;
+
+            let exists = false;
+            for (let k in mapList) {
+                if (mapList[k] === value)
+                    exists = true;
+            }
+            return exists;
+
+        }
+
+        toArray(): Array<{ key: K, value: V }> {
+            let mapArr = [];
+            let mapList = this._mapList;
+
+            for (let item in mapList) {
+                mapArr.push([item, mapList[item]]);
+            }
+            return mapArr;
+        }
+
+
+        keySet(): Set<K> {
+            let keySet = new Set<K>();
+            let mapArr = this.toArray();
+
+            for (let item of mapArr) {
+                keySet.add(item[0]);
+            }
+            return keySet;
+        }
+
+        values(): Collection<V> {
+            let valCollection = new Collection<V>();
+            let mapArr = this.toArray();
+
+            for (let item of mapArr) {
+                valCollection.add(item[1]);
+            }
+            return valCollection;
+        }
+    }
+} 
