@@ -1,10 +1,10 @@
 <!-- #docregion -->
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>Web Calc</title>
-
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="./css/main.css">
 
     <script src="node_modules/core-js/client/shim.min.js"></script>
     <script src="node_modules/jquery/dist/jquery.min.js"></script>
@@ -12,51 +12,37 @@
 </head>
 
 <body>
-<div class="container">
-
-
-    <h1>Web Calc</h1>
-
-    <table>
-    <tr>
-        <td colspan="4"><input type="text"></input></td>
-    </tr>
-    <tr>
-        <td><button class="btn btn-default btn-block">C</button></td>
-        <td><button class="btn btn-default btn-block">/</button></td>
-        <td><button class="btn btn-default btn-block">x</button></td>
-        <td><button class="btn btn-default btn-block">&leftarrow;</button></td>
-    </tr>
-    <tr>
-        <td><button class="btn btn-default btn-block">7</button></td>
-        <td><button class="btn btn-default btn-block">8</button></td>
-        <td><button class="btn btn-default btn-block">9</button></td>
-        <td><button class="btn btn-default btn-block">-</button></td>
-    </tr>
-    <tr>
-        <td><button class="btn btn-default btn-block">4</button></td>
-        <td><button class="btn btn-default btn-block">5</button></td>
-        <td><button class="btn btn-default btn-block">6</button></td>
-        <td><button class="btn btn-default btn-block">+</button></td>
-    </tr>
-    <tr>
-        <td><button class="btn btn-default btn-block">1</button></td>
-        <td><button class="btn btn-default btn-block">2</button></td>
-        <td><button class="btn btn-default btn-block">3</button></td>
-        <td><button class="btn btn-default btn-block">()</button></td>
-    </tr>
-    <tr>
-        <td><button class="btn btn-default btn-block">0</button></td>
-        <td><button class="btn btn-default btn-block">.</button></td>
-        <td><button class="btn btn-default btn-block">+/-</button></td>
-        <td><button class="btn btn-default btn-block">=</button></td>
-    </tr>
-    </table>
-
-</div>
-
-
-<script src="app/calc.js">
-</script>
+    <div class="wrapper">
+        <div class="calculator">
+            <div class="top-panel panel">
+                <input calc-screen class="screen" type="text" />
+            </div>
+            <div class="bottom-panel panel">
+                <span clear class="key clear">C</span>
+                <span operator="/" class="key">/</span>
+                <span operator="*" class="key">x</span>
+                <span backspace class="key">&larr;</span>
+                <span add="7" class="key">7</span>
+                <span add="8" class="key">8</span>
+                <span add="9" class="key">9</span>
+                <span operator="-" class="key">-</span>
+                <span add="4" class="key">4</span>
+                <span add="5" class="key">5</span>
+                <span add="6" class="key">6</span>
+                <span operator="+" class="key">+</span>
+                <span add="1" class="key">1</span>
+                <span add="2" class="key">2</span>
+                <span add="3" class="key">3</span>
+                <span class="key">()</span>
+                <span add="0" class="key">0</span>
+                <span dot="." class="key">.</span>
+                <span class="key">+/-</span>
+                <span equals class="key equals">=</span>
+            </div>
+        </div>
+    </div>
+    <script src="app/calc.js">
+    </script>
 </body>
+
 </html>

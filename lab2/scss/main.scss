@@ -1,0 +1,94 @@
+@import 'normalize';
+$color-middle-blue: #7EE5DE;
+$color-maximum-blue: #39A8BF;
+$color-light-coral: #FF8C8E;
+$color-yellow: #FFF4BF;
+$color-gunmetal: #292F36;
+* {
+    box-sizing: border-box;
+}
+
+body {
+    background-color: #eee;
+}
+
+.wrapper {
+    text-align: center;
+}
+
+.calculator {
+    width: 325px;
+    margin: 100px auto;
+    background-color: $color-middle-blue;
+    box-shadow: 0 4px $color-maximum-blue, 0 10px 15px rgba(0, 0, 0, 0.3);
+    padding: 20px;
+    border-radius: 3px;
+    text-align: left;
+}
+
+.panel {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    font-weight: bold;
+}
+
+.top-panel {
+    margin-bottom: 10px;
+}
+
+.screen,
+.key {
+    height: 40px;
+    line-height: 40px;
+    vertical-align: middle;
+    border-radius: 3px;
+    color: #fff;
+    margin-bottom: 10px;
+    user-select: none;
+}
+
+.key {
+    display: inline-block;
+    width: 22%;
+    color: #000;
+    text-align: center;
+    cursor: pointer;
+    background-color: #fff;
+    box-shadow: 0 4px rgba(0, 0, 0, .2);
+    transition: all 200ms ease-in-out;
+}
+
+.key:focus,
+.key:active {
+    transform: translateY(4px);
+    box-shadow: none;
+}
+
+.clear {
+    background-color: $color-light-coral;
+    box-shadow: 0 4px darken($color-light-coral, 7%);
+    color: #fff;
+}
+
+.equals {
+    background-color: $color-yellow;
+    box-shadow: 0 4px darken($color-yellow, 15%);
+}
+
+.screen {
+    display: inline-block;
+    box-shadow: inset 0 4px rgba(0, 0, 0, .2);
+    width: 100%;
+    background-color: $color-maximum-blue;
+    text-indent: 10px;
+    user-select: none;
+    pointer-events: none;
+    border: none;
+    font-weight: bold;
+}
+
+.js-disabled {
+    opacity: .3;
+    pointer-events: none;
+}
