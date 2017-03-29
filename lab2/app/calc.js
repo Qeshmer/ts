@@ -2,52 +2,62 @@ var calc;
 (function (calc) {
     var MathStuff = (function () {
         function MathStuff() {
-            this._mathExpression = '';
+            this.operators = ['+', '-', '/', '*'];
+            this._mathEntry = [];
         }
+        MathStuff.prototype.addToEntry = function (entry) {
+            this._mathEntry.push(entry.toString());
+        };
+        MathStuff.prototype.getEntry = function () {
+            return this._mathEntry.join(" ");
+        };
+        MathStuff.prototype.clearEntry = function () {
+            this._mathEntry = [];
+        };
+        MathStuff.prototype.lastOfEntry = function () {
+            return this._mathEntry[this._mathEntry.length - 1];
+        };
+        MathStuff.prototype.evaluate = function () {
+            console.log(this._mathEntry);
+            var stringExpression = this._mathEntry.join('');
+            var evaluator = function (fn) {
+                return new Function('return ' + fn)();
+            };
+            console.log(evaluator(stringExpression));
+        };
         return MathStuff;
     }());
     ;
     var calcMath = new MathStuff();
-    var operators = ['+', '-', '/', '*'];
-    var calcScreen = $('[calc-screen]');
+    var operatorButtons = $('[operator]');
+    var numberButtons = $('[add]');
     var clearButton = $('[clear]');
-    var dotButton = $('[dot]');
     var equals = $('[equals]');
-    var backspace = $('[backspace]');
-    var hasNoOperator = function () {
-        var lastChar = calcScreen.val().charAt(calcScreen.val().length - 1);
-        return operators.indexOf(lastChar) === -1;
+    var calcScreen = $('[calc-screen]');
+    var clear = function () {
     };
-    $('[add]').on('click', function (event) {
-        event.preventDefault();
+    clearButton.on('click', function (event) {
+    });
+    numberButtons.on('click', function (event) {
         var buttonText = $(this).attr('add');
         calcScreen.val(calcScreen.val() + buttonText);
     });
-    $('[operator]').on('click', function (event) {
-        event.preventDefault();
+    operatorButtons.on('click', function (event) {
         var buttonText = $(this).attr('operator');
-        if (calcScreen.val() !== '' && hasNoOperator()) {
-            calcScreen.val(calcScreen.val() + buttonText);
+        if (calcScreen.val() !== '') {
+            calcMath.addToEntry(calcScreen.val());
         }
-    });
-    dotButton.on('click', function (event) {
-        event.preventDefault();
-        var buttonText = $(this).attr('dot');
-        if (calcScreen.val().indexOf('.') === -1) {
-            calcScreen.val(calcScreen.val() + buttonText);
+        if (calcScreen.val() !== '' && calcMath.operators.indexOf(calcMath.lastOfEntry()) === -1) {
+            calcMath.addToEntry(buttonText);
         }
-    });
-    clearButton.on('click', function (event) {
-        event.preventDefault();
         calcScreen.val('');
     });
-    equals.on('click', function (event) {
-        event.preventDefault();
-        calcScreen.val(eval(calcScreen.val()));
-    });
-    backspace.on('click', function (event) {
-        event.preventDefault();
-        calcScreen.val(calcScreen.val().slice(0, calcScreen.val().length - 1));
+    equals.on('click', function (entry) {
+        if (calcScreen.val() !== '') {
+            calcMath.addToEntry(calcScreen.val());
+        }
+        calcMath.evaluate();
+        calcScreen.val('');
     });
 })(calc || (calc = {}));
 //# sourceMappingURL=calc.js.map
