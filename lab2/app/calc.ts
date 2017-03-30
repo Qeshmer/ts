@@ -57,8 +57,7 @@ namespace calc {
 
     backspace.on('click', function (event) {
         event.preventDefault();
-
-        screen.val(screen.val().slice(0, screen.val().length - 1));
+        screen.val(screen.val().pop());
     });
 
     numberButtons.on('click', function (event) {
@@ -113,7 +112,7 @@ namespace calc {
     plusMinus.on('click', function () {
         let isPositve = screen.val().indexOf('-') === -1;
 
-        if (isPositve) {
+        if (isPositve && screen.val() !== '') {
             screen.val('-' + screen.val());
         } else {
             screen.val(screen.val().replace('-', ''));
