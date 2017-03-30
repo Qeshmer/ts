@@ -3,10 +3,11 @@ namespace calc {
     class MathStuff {
         private _mathEntries: string[];
         public operators: string[] = ['+', '-', '/', '*'];
-        evaluated = false;
+        public evaluated: boolean;
 
         constructor() {
             this._mathEntries = [];
+            this.evaluated = false;
         }
 
         addToEntries(entry: string): void {
@@ -23,12 +24,14 @@ namespace calc {
 
         clearEntries() {
             this._mathEntries = [];
+            this.evaluated = false;
         }
 
         evaluate() {
             if (this.operators.indexOf(this.lastOfEntries()) > -1) {
                 this._mathEntries.pop();
             }
+
             let mathExpression = this._mathEntries.join('');
 
             let evaluator = function (fn) {
@@ -42,12 +45,21 @@ namespace calc {
     };
 
     let calcMath = new MathStuff();
-
     let screen = $('[calc-screen]');
+
     let numberButtons = $('[add]');
     let operators = $('[operator]');
     let backspace = $('[backspace]');
     let equals = $('[equals]');
+    let clear = $('[clear]');
+    let dot = $('[dot]');
+    let plusMinus = $('[plusMinus]');
+
+    backspace.on('click', function (event) {
+        event.preventDefault();
+
+        screen.val(screen.val().slice(0, screen.val().length - 1));
+    });
 
     numberButtons.on('click', function (event) {
         if (calcMath.evaluated) {
@@ -60,11 +72,6 @@ namespace calc {
         screen.val(screen.val() + buttonText);
     });
 
-    backspace.on('click', function (event) {
-        event.preventDefault();
-
-        screen.val(screen.val().slice(0, screen.val().length - 1));
-    });
 
     operators.on('click', function (event) {
         event.preventDefault();
@@ -81,6 +88,19 @@ namespace calc {
         }
     });
 
+    clear.on('click', function (event) {
+        event.preventDefault();
+        screen.val('');
+        calcMath.clearEntries();
+    });
+
+    dot.on('click', function (event) {
+        let dotText = $(this).attr('dot');
+        if (screen.val().indexOf(dotText) === -1) {
+            screen.val(screen.val() + dotText);
+        }
+    });
+
     equals.on('click', function () {
         if (screen.val() !== '') {
             calcMath.addToEntries(screen.val().toString());
@@ -88,6 +108,17 @@ namespace calc {
 
         screen.val(calcMath.evaluate());
         calcMath.clearEntries();
+    });
+
+    plusMinus.on('click', function () {
+        let isPositve = screen.val().indexOf('-') === -1;
+
+        if (isPositve) {
+            screen.val('-' + screen.val());
+        } else {
+            screen.val(screen.val().replace('-', ''));
+        }
+
     });
 
     $('#entrybutton').on('click', function () {
