@@ -454,6 +454,9 @@ body {
   transform: translateY(4px);
   box-shadow: none; }
 
+.zero {
+  width: 48%; }
+
 .clear {
   background-color: #FF8C8E;
   box-shadow: 0 4px #ff686b;

@@ -1,89 +1,97 @@
 namespace calc {
 
     class MathStuff {
-
-        private _mathEntry: string[]
-        public operators = ['+', '-', '/', '*'];
-
+        private _mathEntries: string[];
+        public operators: string[] = ['+', '-', '/', '*'];
+        evaluated = false;
 
         constructor() {
-            this._mathEntry = [];
+            this._mathEntries = [];
         }
 
-        addToEntry(entry: string | number): void {
-            this._mathEntry.push(entry.toString());
+        addToEntries(entry: string): void {
+            this._mathEntries.push(entry);
         }
 
-        getEntry() {
-            return this._mathEntry.join(" ");
+        getEntries() {
+            return this._mathEntries;
         }
 
-        clearEntry(): void {
-            this._mathEntry = [];
+        lastOfEntries() {
+            return this._mathEntries[this._mathEntries.length - 1];
         }
 
-        lastOfEntry() {
-            return this._mathEntry[this._mathEntry.length - 1];
+        clearEntries() {
+            this._mathEntries = [];
         }
 
         evaluate() {
-            console.log(this._mathEntry);
-            let stringExpression = this._mathEntry.join('');
+            if (this.operators.indexOf(this.lastOfEntries()) > -1) {
+                this._mathEntries.pop();
+            }
+            let mathExpression = this._mathEntries.join('');
 
             let evaluator = function (fn) {
                 return new Function('return ' + fn)();
-
             };
 
-            console.log(evaluator(stringExpression));
-
+            this.evaluated = true
+            return evaluator(mathExpression);
         }
 
     };
 
     let calcMath = new MathStuff();
 
-    let operatorButtons = $('[operator]');
+    let screen = $('[calc-screen]');
     let numberButtons = $('[add]');
-    let clearButton = $('[clear]');
+    let operators = $('[operator]');
+    let backspace = $('[backspace]');
     let equals = $('[equals]');
-    let calcScreen = $('[calc-screen]');
-
-    let clear = function (): void {
-
-    };
-
-    clearButton.on('click', function (event) {
-
-    });
 
     numberButtons.on('click', function (event) {
+        if (calcMath.evaluated) {
+            screen.val('');
+            calcMath.evaluated = false;
+        }
+        event.preventDefault();
         let buttonText = $(this).attr('add');
 
-        calcScreen.val(calcScreen.val() + buttonText);
+        screen.val(screen.val() + buttonText);
     });
 
-    operatorButtons.on('click', function (event) {
+    backspace.on('click', function (event) {
+        event.preventDefault();
+
+        screen.val(screen.val().slice(0, screen.val().length - 1));
+    });
+
+    operators.on('click', function (event) {
+        event.preventDefault();
+        let lastChar = screen.val().charAt(screen.val().length - 1);
         let buttonText = $(this).attr('operator');
 
-        if (calcScreen.val() !== '') {
-            calcMath.addToEntry(calcScreen.val());
+        if (screen.val() !== '') {
+            calcMath.addToEntries(screen.val().toString());
         }
 
-        if (calcScreen.val() !== '' && calcMath.operators.indexOf(calcMath.lastOfEntry()) === -1) {
-            calcMath.addToEntry(buttonText);
+        if (screen.val() !== '' && calcMath.operators.indexOf(lastChar) === -1) {
+            calcMath.addToEntries(buttonText.toString());
+            screen.val('');
         }
-
-        calcScreen.val('');
-
     });
 
-    equals.on('click', function (entry) {
-        if (calcScreen.val() !== '') {
-            calcMath.addToEntry(calcScreen.val());
+    equals.on('click', function () {
+        if (screen.val() !== '') {
+            calcMath.addToEntries(screen.val().toString());
         }
-        calcMath.evaluate();
-        calcScreen.val('');
+
+        screen.val(calcMath.evaluate());
+        calcMath.clearEntries();
+    });
+
+    $('#entrybutton').on('click', function () {
+        console.log(calcMath.getEntries());
     });
 
 }

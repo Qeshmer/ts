@@ -65,6 +65,10 @@ body {
     box-shadow: none;
 }
 
+.zero {
+    width: 48%;
+}
+
 .clear {
     background-color: $color-light-coral;
     box-shadow: 0 4px darken($color-light-coral, 7%);
